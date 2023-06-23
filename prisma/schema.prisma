@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String   @id @default(uuid())
+  username         String   @unique
+  phone            String   @unique
+  email            String   @unique
+  password         String
+  apartment        String
+  street           String
+  city             String
+  country          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isAdmin          Boolean  @default(false)
+  verificationCode Int?
+  isVerified       Boolean  @default(false)
+}
+
+model Room {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  price       Int
+  type        String
+  country     String
+  city        String
+  street      String
+
+  lon       String?
+  lat       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Roommate {
+  id          String               @id @default(uuid())
+  name        String
+  preferences RoommatePreference[]
+  home        Home?                @relation(fields: [homeId], references: [id])
+  homeId      String?
+}
+
+model Home {
+  id        String     @id @default(uuid())
+  name      String
+  roommates Roommate[]
+}
+
+model RoommatePreference {
+  id          String   @id @default(uuid())
+  // roommate     Roommate @relation(fields: [roomId], references: [id])
+  // roomId       String
+  preferred   Roommate @relation(fields: [preferredId], references: [id])
+  preferredId String
+}
