@@ -52,7 +52,8 @@ export const findHome = async(req:Request , res : Response)=>{
 
 //Home Create
 
-export const createHome = async(req:Request , res:Response)=>{
+export const 
+createHome = async(req:Request , res:Response)=>{
     const {title , description , price ,type , country , city ,street , lon , lat } = req.body
    try {
     const room= await prisma.room.create({
